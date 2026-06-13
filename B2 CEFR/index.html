@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> B2 Yo'l Xaritasi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-50: #EEEDFE;
+    --purple-400: #7F77DD;
+    --purple-600: #534AB7;
+    --purple-800: #3C3489;
+    --teal-50: #E1F5EE;
+    --teal-600: #0F6E56;
+    --amber-50: #FAEEDA;
+    --amber-600: #854F0B;
+    --coral-50: #FAECE7;
+    --coral-600: #993C1D;
+    --gray-50: #F7F6F3;
+    --gray-100: #EDEDEA;
+    --gray-400: #888780;
+    --gray-800: #2C2C2A;
+    --text: #1a1a18;
+    --text-muted: #5a5a57;
+    --text-faint: #9a9a96;
+    --border: rgba(0,0,0,0.08);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #FAFAF8;
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,250,248,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-brand { font-family: 'Fraunces', serif; font-size: 18px; color: var(--purple-600); letter-spacing: -0.3px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a {
+    text-decoration: none; font-size: 13px; color: var(--text-muted);
+    padding: 6px 12px; border-radius: var(--radius-sm);
+    transition: background .15s, color .15s;
+  }
+  .nav-links a:hover { background: var(--gray-100); color: var(--text); }
+
+  /* HERO */
+  .hero {
+    max-width: 720px; margin: 0 auto;
+    padding: 80px 2rem 60px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block; font-size: 12px; font-weight: 500;
+    background: var(--purple-50); color: var(--purple-800);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+    letter-spacing: .04em;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.15; letter-spacing: -1px;
+    color: var(--text); margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: italic; color: var(--purple-600); }
+  .hero p { font-size: 16px; color: var(--text-muted); max-width: 480px; margin: 0 auto 32px; line-height: 1.7; }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 32px;
+    border-top: 1px solid var(--border); padding-top: 28px; margin-top: 28px;
+  }
+  .stat-num { font-size: 28px; font-weight: 600; color: var(--purple-600); line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--text-faint); margin-top: 4px; }
+
+  /* SECTION */
+  section { max-width: 860px; margin: 0 auto; padding: 60px 2rem; }
+  .section-eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--purple-600); margin-bottom: 8px;
+  }
+  .section-title { font-family: 'Fraunces', serif; font-size: 28px; color: var(--text); margin-bottom: 8px; letter-spacing: -.3px; }
+  .section-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.6; }
+  .divider { border: none; border-top: 1px solid var(--border); max-width: 860px; margin: 0 auto; }
+
+  /* ROADMAP */
+  .roadmap { display: flex; flex-direction: column; gap: 12px; }
+  .phase {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+    cursor: pointer; transition: box-shadow .15s;
+  }
+  .phase:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .phase-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 20px; user-select: none;
+  }
+  .phase-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .phase-title { font-size: 14px; font-weight: 500; flex: 1; }
+  .phase-meta { font-size: 12px; color: var(--text-faint); }
+  .phase-chevron { font-size: 16px; color: var(--text-faint); transition: transform .2s; }
+  .phase.open .phase-chevron { transform: rotate(180deg); }
+  .phase-body {
+    display: none; padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .phase.open .phase-body { display: block; }
+  .phase-body ul { list-style: none; padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+  .phase-body li {
+    font-size: 13px; color: var(--text-muted);
+    display: flex; gap: 8px; align-items: flex-start; line-height: 1.5;
+  }
+  .phase-body li::before {
+    content: ''; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--purple-400); margin-top: 7px; flex-shrink: 0;
+  }
+
+  /* SPEAKING */
+  .tabs-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tab-btn {
+    padding: 7px 16px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border); font-size: 13px; cursor: pointer;
+    background: #fff; color: var(--text-muted); transition: all .15s;
+    font-family: 'Inter', sans-serif;
+  }
+  .tab-btn.active { background: var(--purple-50); border-color: var(--purple-400); color: var(--purple-800); font-weight: 500; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .card {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem 1.25rem;
+  }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .badge-a1 { background: #EAF3DE; color: #3B6D11; }
+  .badge-a2 { background: var(--teal-50); color: var(--teal-600); }
+  .badge-b1 { background: var(--amber-50); color: var(--amber-600); }
+  .badge-b2 { background: var(--purple-50); color: var(--purple-800); }
+  .card h3 { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .card p { font-size: 13px; color: var(--text-muted); line-height: 1.55; margin-bottom: 10px; }
+  .card ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .card ul li { font-size: 12px; color: var(--text-muted); display: flex; gap: 6px; align-items: flex-start; }
+  .card ul li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--purple-400); margin-top: 7px; flex-shrink: 0; }
+
+  /* GRAMMAR */
+  .grammar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .grammar-item {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: .875rem 1rem;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .grammar-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--purple-50); color: var(--purple-800);
+    font-size: 11px; font-weight: 500; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .grammar-item h4 { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .grammar-item p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+  /* GAP QURISH */
+  .exercise-list { display: flex; flex-direction: column; gap: 10px; }
+  .exercise {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem 1.25rem;
+  }
+  .exercise-head { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .ex-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--purple-50); color: var(--purple-600);
+    font-size: 12px; font-weight: 500; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .exercise h3 { font-size: 14px; font-weight: 500; }
+  .formula {
+    background: var(--purple-50); border-radius: var(--radius-sm);
+    padding: .5rem .875rem; font-size: 12px; color: var(--purple-800);
+    font-family: 'Inter', monospace; margin-bottom: 8px; line-height: 1.5;
+  }
+  .examples { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+  .examples li {
+    font-size: 13px; color: var(--text-muted);
+    background: var(--gray-50); border-radius: var(--radius-sm);
+    padding: 5px 10px; line-height: 1.4;
+  }
+  .examples li strong { color: var(--text); font-weight: 500; }
+  .tip-box {
+    border-left: 2px solid var(--purple-400); padding: .5rem .75rem;
+    border-radius: 0; margin-top: 6px;
+  }
+  .tip-box p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* TECHNIQUES */
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .tech-card {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem;
+  }
+  .tech-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--purple-50); color: var(--purple-800);
+    font-size: 13px; font-weight: 500; display: flex;
+    align-items: center; justify-content: center; margin-bottom: 10px;
+  }
+  .tech-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .tech-card p { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+  .tech-steps { list-style: none; margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .tech-steps li { font-size: 12px; color: var(--text-muted); display: flex; gap: 6px; }
+  .step-n {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--gray-100); font-size: 10px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* DAILY */
+  .daily-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+  .day-card {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem;
+  }
+  .day-label {
+    font-size: 11px; font-weight: 500; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--purple-600); margin-bottom: 6px;
+  }
+  .day-card h3 { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+  .day-card p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* PHRASES */
+  .phrase-block { margin-bottom: 20px; }
+  .phrase-block h3 { font-size: 14px; font-weight: 500; margin-bottom: 10px; color: var(--text); }
+  .phrase-list { display: flex; flex-direction: column; gap: 6px; }
+  .phrase-item {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: .625rem 1rem;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .phrase-en { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
+  .phrase-uz { font-size: 12px; color: var(--text-faint); }
+  .fail{
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 40px 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--text-faint);
+  }
+  footer strong { color: var(--purple-600); }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero { padding: 48px 1.25rem 40px; }
+    .hero-stats { gap: 20px; }
+    section { padding: 40px 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">nuriye.english</span>
+  <div class="nav-links">
+    <a href="#roadmap">Reja</a>
+    <a href="#speaking">Speaking</a>
+    <a href="#gap-qurish">Gap qurish</a>
+    <a href="#grammar">Grammatika</a>
+    <a href="#texnikalar">Texnikalar</a>
+    <a href="#phrases">B2 Frazalar</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-badge">CEFR B2 — Shaxsiy yo'l xaritasi</span>
+  <h1>A2 dan <em>B2 gacha</em> — qadamma-qadam</h1>
+  <p>barcha materiallariga asoslangan. Gap qurish, speaking, grammatika — hammasi bir joyda.</p>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">6</div>
+      <div class="stat-label">oy</div>
+    </div>
+    <div>
+      <div class="stat-num">8</div>
+      <div class="stat-label">texnika</div>
+    </div>
+    <div>
+        <a href="#fraza">
+      <div class="stat-num">200+</div>
+      <div class="stat-label">fraza</div></a>
+    </div>
+    <div>
+      <div class="stat-num">10</div>
+      <div class="stat-label">daqiqa/kun</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-eyebrow">Oylik reja</div>
+  <h2 class="section-title">6 oylik yo'l xaritasi</h2>
+  <p class="section-sub">Har bir bosqichni bosib ochishingiz mumkin.</p>
+  <div class="roadmap">
+
+    <div class="phase open" onclick="togglePhase(this)">
+      <div class="phase-header">
+        <div class="phase-dot" style="background:#639922"></div>
+        <span class="phase-title">1–2-oy — A2 mustahkamlash</span>
+        <span class="phase-meta">Hozir shu yerdasiz</span>
+        <span class="phase-chevron">▾</span>
+      </div>
+      <div class="phase-body">
+        <ul>
+          <li>Har kuni 6 ta gap yozish: kecha + bugun + ertaga (Past / Present / Future)</li>
+          <li>30 kunda speaking: 1–14 kun (self-intro, daily routine, feelings)</li>
+          <li>A1–A2 50 ta fraza yodlash va ishlatish</li>
+          <li>Gap uzaytirish: because, but, so, and qo'shish</li>
+          <li>Habit Stacking: choy ichganda → 2 min so'z takrorlash</li>
+          <li>Har kuni voice log — 1–2 daqiqa ovoz yozish</li>
+          <li>Har kuni A2 darajadagi english video korish va uni tahlil qilish va 2 haftadan song b1 daraja
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase" onclick="togglePhase(this)">
+      <div class="phase-header">
+        <div class="phase-dot" style="background:#BA7517"></div>
+        <span class="phase-title">3–4-oy — B1 darajasi</span>
+        <span class="phase-meta">2-oydan keyin</span>
+        <span class="phase-chevron">▾</span>
+      </div>
+      <div class="phase-body">
+        <ul>
+          <li>30 kunda speaking: 15–30 kun (argument, hikoya, bahslashuv)</li>
+          <li>B1 50 ta fraza: As far as I'm concerned, I see what you mean…</li>
+          <li>100 ta so'z: 31–60 (B1 darajasi)</li>
+          <li>Word Root texnikasi: 20 ta prefiks (un-, re-, dis-, pre-…)</li>
+          <li>Taqqoslash, o'tmish, Present Perfect</li>
+          <li>Pros & Cons debate mashqlari</li>
+          <li>ekinshi oyidan b2 darajadagi english video korish va uni tahlil qilish </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase" onclick="togglePhase(this)">
+      <div class="phase-header">
+        <div class="phase-dot" style="background:#534AB7"></div>
+        <span class="phase-title">5–6-oy — B2 darajasi</span>
+        <span class="phase-meta">Maqsad</span>
+        <span class="phase-chevron">▾</span>
+      </div>
+      <div class="phase-body">
+        <ul>
+          <li>B2 50 ta fraza: From what I can tell, The way I see it…</li>
+          <li>100 ta so'z: 61–100 (B2 darajasi: enhance, maintain, emphasize…)</li>
+          <li>Natural speaking: 5 daqiqalik erkin nutq</li>
+          <li>Abstract mavzular: texnologiya, jamiyat, atrof-muhit</li>
+          <li>Mock CEFR test — o'z darajangizni tekshirish</li>
+          <li>ekinshi oyidan C1 darajadagi english video korish va uni tahlil qilish </li>
+          <li>Final speech: "Who am I after 6 months of learning?"</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- GAP QURISH -->
+<section id="gap-qurish">
+  <div class="section-eyebrow">Eng muhim bo'lim</div>
+  <h2 class="section-title">Gap qurish — bosqichma-bosqich</h2>
+  <p class="section-sub">Sen grammatikani bilasan. Endi uni ishlatishni o'rganish vaqti. Har bir mashqni yozib, keyin ovoz chiqarib ayt.</p>
+  <div class="exercise-list">
+
+    <div class="exercise">
+      <div class="exercise-head">
+        <div class="ex-num">1</div>
+        <h3>Present Simple — oddiy gap</h3>
+      </div>
+      <div class="formula">S + V(s/es) + ... &nbsp;|&nbsp; S + don't/doesn't + V + ...</div>
+      <ul class="examples">
+        <li><strong>I work</strong> in a school.</li>
+        <li><strong>She doesn't like</strong> coffee.</li>
+        <li><strong>They usually watch</strong> TV at night.</li>
+      </ul>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:6px">Sen yoz: o'zing haqingda 3 ta gap — ish, sevimli narsa, odating.</p>
+      <div class="tip-box"><p>Boshlang: "I usually…" — keyin davom ettirish oson bo'ladi.</p></div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-head">
+        <div class="ex-num">2</div>
+        <h3>Past Simple — kecha nima qilding?</h3>
+      </div>
+      <div class="formula">S + V(ed / irregular) + ... &nbsp;|&nbsp; S + didn't + V + ...</div>
+      <ul class="examples">
+        <li><strong>I watched</strong> a film yesterday.</li>
+        <li><strong>She didn't come</strong> to class.</li>
+        <li><strong>We went</strong> to a cafe.</li>
+      </ul>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:6px">Kechagi kuning haqida 3 ta gap qur. Ertalabdan kechgacha nima qilding?</p>
+      <div class="tip-box"><p>Boshlang: "Yesterday I woke up at…"</p></div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-head">
+        <div class="ex-num">3</div>
+        <h3>Going to / Will — reja</h3>
+      </div>
+      <div class="formula">S + am/is/are + going to + V &nbsp;|&nbsp; S + will + V</div>
+      <ul class="examples">
+        <li><strong>I'm going to study</strong> English tonight.</li>
+        <li><strong>She will call</strong> you tomorrow.</li>
+        <li><strong>We're going to visit</strong> Samarkand next week.</li>
+      </ul>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:6px">Keyingi hafta rejalaringdan 3 ta gap qur.</p>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-head">
+        <div class="ex-num">4</div>
+        <h3>Gap uzaytirish — connector</h3>
+      </div>
+      <div class="formula">... because ... &nbsp;|&nbsp; ... but ... &nbsp;|&nbsp; ... so ... &nbsp;|&nbsp; ... and ...</div>
+      <ul class="examples">
+        <li>I like English <strong>because</strong> it's useful for work.</li>
+        <li>I wanted to go out <strong>but</strong> it was raining.</li>
+        <li>I was tired <strong>so</strong> I went to bed early.</li>
+      </ul>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:6px">Oldingi gapinglardan birini kengaytir — because, but, so qo'sh.</p>
+      <div class="tip-box"><p>Bu eng muhim qadam. Qisqa gap emas, uzun gap qurishni o'rganish — B1 va B2 ning asosi.</p></div>
+    </div>
+
+    <div class="exercise" style="background:var(--purple-50);border-color:var(--purple-400)">
+      <div class="exercise-head">
+        <div class="ex-num" style="background:#fff">★</div>
+        <h3>Kunlik mini-mashq — 10 daqiqa</h3>
+      </div>
+      <ul class="examples" style="background:transparent">
+        <li style="background:#fff">Kecha haqida <strong>2 ta gap</strong> yoz (Past Simple)</li>
+        <li style="background:#fff">Bugun haqida <strong>2 ta gap</strong> yoz (Present Simple)</li>
+        <li style="background:#fff">Ertaga haqida <strong>2 ta gap</strong> yoz (Going to)</li>
+        <li style="background:#fff">Bitta gapga <strong>because yoki but</strong> qo'sh</li>
+        <li style="background:#fff">Ovoz yozib <strong>ayt</strong> — yozish yetarli emas</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SPEAKING -->
+<section id="speaking">
+  <div class="section-eyebrow">Ko'nikma</div>
+  <h2 class="section-title">Speaking mashqlari</h2>
+  <p class="section-sub">Darajangizga mos mavzu tanlang.</p>
+  <div class="tabs-row">
+    <button class="tab-btn active" onclick="showTab('mavzular', this)">Mavzular</button>
+    <button class="tab-btn" onclick="showTab('texnikalar-tab', this)">Texnikalar</button>
+    <button class="tab-btn" onclick="showTab('kunlik-tab', this)">Kunlik jadval</button>
+  </div>
+
+  <div id="mavzular" class="tab-panel active">
+    <div class="card-grid">
+      <div class="card">
+        <span class="badge badge-a2">A2 — Hozir</span>
+        <h3>O'zingiz haqingizda</h3>
+        <p>Qo'rquvni yo'q qilish uchun eng oddiy mavzular.</p>
+        <ul>
+          <li>Self-intro: I am, I live in, I like…</li>
+          <li>Daily routine: I usually, I always…</li>
+          <li>Hobbies: I prefer, I enjoy…</li>
+          <li>Family: He is, She works…</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge badge-b1">B1</span>
+        <h3>Kengaytirilgan nutq</h3>
+        <p>Uzunroq, mantiqli gap qurishlar.</p>
+        <ul>
+          <li>Past: I used to, I've been to…</li>
+          <li>Problem: The problem is, We could…</li>
+          <li>Story: Suddenly, After a while…</li>
+          <li>Compare: A is better than B…</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge badge-b2">B2 — Maqsad</span>
+        <h3>Natural speaking</h3>
+        <p>Erkin, tabiiy, ishonchli nutq.</p>
+        <ul>
+          <li>Debate: I see your point, but…</li>
+          <li>Complex: From what I can tell…</li>
+          <li>Abstract: texnologiya, jamiyat</li>
+          <li>Defend: My point is that…</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="texnikalar-tab" class="tab-panel">
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-num">1</div>
+        <h3>4–3–2 texnikasi</h3>
+        <p>Bir mavzuni 3 marta gapirasiz, vaqt kamayib boradi.</p>
+        <ul class="tech-steps">
+          <li><div class="step-n">1</div>Mavzu tanlang. 4 daqiqa erkin gapiring.</li>
+          <li><div class="step-n">2</div>O'sha mavzuni 3 daqiqada qayta ayting.</li>
+          <li><div class="step-n">3</div>Endi 2 daqiqada — tezlik oshadi.</li>
+        </ul>
+      </div>
+      <div class="tech-card">
+        <div class="tech-num">2</div>
+        <h3>5 Ws texnikasi</h3>
+        <p>Har qanday savolni Who, What, When, Where, Why orqali kengaytiring.</p>
+        <ul class="tech-steps">
+          <li><div class="step-n">1</div>Mavzu oling: "mening sevimli joyim".</li>
+          <li><div class="step-n">2</div>5 W ga qisqa javob yozing.</li>
+          <li><div class="step-n">3</div>Yozmasdan 2 daqiqa gapiring.</li>
+        </ul>
+      </div>
+      <div class="tech-card">
+        <div class="tech-num">3</div>
+        <h3>Voice log</h3>
+        <p>Har kuni 1–2 daqiqa ovoz yozib, hafta oxirida taqqoslash.</p>
+        <ul class="tech-steps">
+          <li><div class="step-n">1</div>Har kuni bir xil vaqtda gapiring.</li>
+          <li><div class="step-n">2</div>Mavzu: bugun nima qildim.</li>
+          <li><div class="step-n">3</div>Hafta oxirida eshiting — o'sishni sezasiz.</li>
+        </ul>
+      </div>
+      <div class="tech-card">
+        <div class="tech-num">4</div>
+        <h3>Pros & Cons debate</h3>
+        <p>B2 uchun asosiy texnika: ikki tomonni gapirish.</p>
+        <ul class="tech-steps">
+          <li><div class="step-n">1</div>Mavzu: "Is social media good or bad?"</li>
+          <li><div class="step-n">2</div>1 daqiqa faqat pros (afzalliklar).</li>
+          <li><div class="step-n">3</div>1 daqiqa cons — "However…" bilan boshlang.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="kunlik-tab" class="tab-panel">
+    <div class="daily-grid">
+      <div class="day-card">
+        <div class="day-label">Dushanba</div>
+        <h3>Warm-up</h3>
+        <p>O'zingiz haqingizda 2 daqiqa. Self-intro + bugungi kayfiyat.</p>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Seshanba</div>
+        <h3>4–3–2</h3>
+        <p>Mavzu: "The best decision I ever made."</p>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Chorshanba</div>
+        <h3>5 Ws</h3>
+        <p>Jadval to'ldirib, so'ng 2 daqiqa yozmasdan gapiring.</p>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Payshanba</div>
+        <h3>Pros & Cons</h3>
+        <p>"Should English be the global language?"</p>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Juma</div>
+        <h3>Monolog</h3>
+        <p>3 daqiqa. B2 frazalarini ishlatish maqsad. Ovoz yozing.</p>
+      </div>
+      <div class="day-card">
+        <div class="day-label">Shanba</div>
+        <h3>Tahlil</h3>
+        <p>Voice loglarni eshiting. Qaysi frazalar chiqmadi?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- GRAMMAR -->
+<section id="grammar">
+  <div class="section-eyebrow">Grammatika</div>
+  <h2 class="section-title">A2 → B2 grammatika mavzulari</h2>
+  <p class="section-sub">Siz A2 darajadasiz va asosiy zamonlarni bilasiz. Quyidagi tartibda o'qing.</p>
+  <div class="grammar-grid">
+    <div class="grammar-item">
+      <div class="grammar-num">1</div>
+      <div><h4>Connectors</h4><p>because, but, so, and, although, however</p></div>
+    </div>
+    <div class="grammar-item">
+      <div class="grammar-num">2</div>
+      <div><h4>Present Perfect</h4><p>I have done, She has been, Have you ever…?</p></div>
+    </div>
+    <div class="grammar-item">
+      <div class="grammar-num">3</div>
+      <div><h4>Conditional 1</h4><p>If I study, I will pass. If it rains, we'll stay.</p></div>
+    </div>
+    <div class="grammar-item">
+      <div class="grammar-num">4</div>
+      <div><h4>Conditional 2</h4><p>If I had money, I would travel. Xayoliy vaziyat.</p></div>
+    </div>
+    <div class="grammar-item">
+      <div class="grammar-num">5</div>
+      <div><h4>Passive voice</h4><p>It was built in 1900. English is spoken worldwide.</p></div>
+    </div>
+    <div class="grammar-item">
+      <div class="grammar-num">6</div>
+      <div><h4>Reported speech</h4><p>She said (that) she was tired. He told me to wait.</p></div>
+    </div>
+    <div class="grammar-item">
+      <div class="grammar-num">7</div>
+      <div><h4>Relative clauses</h4><p>The book which I read… The man who called…</p></div>
+    </div>
+    <div class="grammar-item">
+      <div class="grammar-num">8</div>
+      <div><h4>Gerund vs Infinitive</h4><p>I enjoy reading. I want to learn. I stopped smoking.</p></div>
+    </div>
+    <div class="grammar-item">
+      <div class="grammar-num">9</div>
+      <div><h4>Articles</h4><p>a/an/the — qachon ishlatish va qachon tashlab ketish.</p></div>
+    </div>
+    <div class="grammar-item">
+      <div class="grammar-num">10</div>
+      <div><h4>Word formation</h4><p>un-, re-, dis-, -ness, -ful, -er (prefiks va suffiks)</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TEXNIKALAR -->
+<section id="texnikalar">
+  <div class="section-eyebrow">O'rganish usullari</div>
+  <h2 class="section-title">So'z va ko'nikma texnikalari</h2>
+  <p class="section-sub">Nuriya Akhmedovnaning materiallaridan olingan eng samarali usullar.</p>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-num">S</div>
+      <h3>Spaced Repetition</h3>
+      <p>Yangi so'zni 10 min, 50 min, ertasi kuni, 2 kundan keyin takrorlash. Kamida 7 marta duch kelish kerak.</p>
+    </div>
+    <div class="tech-card">
+      <div class="tech-num">A</div>
+      <h3>Associative Learning</h3>
+      <p>So'zni tarjima bilan emas, aniq situatsiya bilan yodlash. Word → Definition → Specific Situation.</p>
+    </div>
+    <div class="tech-card">
+      <div class="tech-num">W</div>
+      <h3>Word Root texnikasi</h3>
+      <p>So'z ildizini bilib, 10–20 yangi so'zni bir vaqtda tushunish. bio = hayot → biology, biography.</p>
+    </div>
+    <div class="tech-card">
+      <div class="tech-num">H</div>
+      <h3>Habit Stacking</h3>
+      <p>Yangi ingliz odatini eski odatga bog'lash. Choy → 2 min so'z. Telefon quvvat → 1 min speaking.</p>
+    </div>
+    <div class="tech-card">
+      <div class="tech-num">P</div>
+      <h3>Pomodoro</h3>
+      <p>25 min ish + 5 min dam. 3 blok: so'zlar / listening+reading / grammar+writing. Telefon o'chirilgan holda.</p>
+    </div>
+    <div class="tech-card">
+      <div class="tech-num">C</div>
+      <h3>Learning in Chunks</h3>
+      <p>So'zlarni alohida emas, collocation sifatida yodlash. "Strong rain", "make a decision", "take a break".</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PHRASES -->
+<section id="phrases">
+  <div class="section-eyebrow">B2 Frazalar</div>
+  <h2 class="section-title">Speaking uchun B2 frazalar</h2>
+  <p class="section-sub">Bu frazalarni ishlatganda nutqingiz B2 darajasiga chiqadi.</p>
+
+  <div class="phrase-block">
+    <h3>Fikr bildirish</h3>
+    <div class="phrase-list">
+      <div class="phrase-item"><span class="phrase-en">From what I can tell…</span><span class="phrase-uz">Ko'rib/tushunishimcha…</span></div>
+      <div class="phrase-item"><span class="phrase-en">The way I see it…</span><span class="phrase-uz">Menimcha, men ko'rganim bo'yicha…</span></div>
+      <div class="phrase-item"><span class="phrase-en">If I'm being honest…</span><span class="phrase-uz">Agar rostini aytsam…</span></div>
+      <div class="phrase-item"><span class="phrase-en">At the end of the day…</span><span class="phrase-uz">Oxir-oqibat…</span></div>
+      <div class="phrase-item"><span class="phrase-en">I have mixed feelings about it.</span><span class="phrase-uz">Ikki xil his-tuyg'udaman.</span></div>
+    </div>
+  </div>
+
+  <div class="phrase-block">
+    <h3>Bahslashuv</h3>
+    <div class="phrase-list">
+      <div class="phrase-item"><span class="phrase-en">I see your point, but…</span><span class="phrase-uz">Fikringizni tushundim, lekin…</span></div>
+      <div class="phrase-item"><span class="phrase-en">That's not necessarily true…</span><span class="phrase-uz">Bu albatta to'g'ri emas…</span></div>
+      <div class="phrase-item"><span class="phrase-en">I wouldn't say that…</span><span class="phrase-uz">Men buni aytmagan bo'lardim…</span></div>
+      <div class="phrase-item"><span class="phrase-en">Let's not jump to conclusions.</span><span class="phrase-uz">Shoshilinch xulosa qilmaylik.</span></div>
+      <div class="phrase-item"><span class="phrase-en">There's no doubt that…</span><span class="phrase-uz">Shubhasiz…</span></div>
+    </div>
+  </div>
+
+  <div class="phrase-block">
+    <h3>Murakkab struktura</h3>
+    <div class="phrase-list">
+      <div class="phrase-item"><span class="phrase-en">The main reason is that…</span><span class="phrase-uz">Asosiy sabab shundaki…</span></div>
+      <div class="phrase-item"><span class="phrase-en">What I mean is…</span><span class="phrase-uz">Demoqchi bo'lganim…</span></div>
+      <div class="phrase-item"><span class="phrase-en">It's more complicated than that.</span><span class="phrase-uz">U bundan ham murakkabroq.</span></div>
+      <div class="phrase-item"><span class="phrase-en">For the most part…</span><span class="phrase-uz">Asosan / ko'p jihatdan…</span></div>
+      <div class="phrase-item"><span class="phrase-en">I'm trying to make sense of it.</span><span class="phrase-uz">Buni tushunishga urinyapman.</span></div>
+    </div>
+  </div>
+</section>
+<section>
+    <iframe id="fraza" class="fail" src="A1-B2 darajadagi faol frazalar.pdf" frameborder="0"></iframe>
+</section>
+
+<footer>
+  <strong></strong> materiallariga asoslangan &nbsp;·&nbsp;  &nbsp;·&nbsp; 
+</footer>
+
+<script>
+function togglePhase(el) {
+  el.classList.toggle('open');
+}
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
